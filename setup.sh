@@ -8,8 +8,20 @@ ENV_FILE=$VOLUMES_DIR/.env
 CREATE_SOLUTION=true
 CREATE_CONTEXT=true
 
+mkdir -p $VOLUMES_DIR
+
 if [ -f $ENV_FILE ]; then
-    source $ENV_FILE
+    if [ -r $ENV_FILE ]; then
+        source $ENV_FILE
+    else
+        echo "You don't have permission to read $ENV_FILE"
+        exit 1
+    fi
+else
+    if ! touch $ENV_FILE 2>/dev/null; then
+        echo "You don't have permission to create $ENV_FILE"
+        exit 1
+    fi
 fi
 
 for ARG in "$@"; do
