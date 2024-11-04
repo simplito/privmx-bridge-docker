@@ -26,7 +26,11 @@ It will boot up the containers, add the API key, one Solution, and one Context.
 ./setup.sh
 ```
 
-If you want to configure HTTPS [go to this section](#https).
+**NOTE:** If you use Windows, run this command in Git Bash or a similar shell.
+
+**NOTE:** If this script ends with containers in a waiting state, try running this script again.
+
+**NOTE:** If you want to configure HTTPS [go to this section](#https).
 
 ## Start
 
