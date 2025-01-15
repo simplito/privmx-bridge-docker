@@ -112,6 +112,10 @@ To create a new Context run:
 
 Documentation for your PrivMX Bridge API is available at [http://localhost:9111/docs](http://localhost:9111/docs) or [https://bridge.privmx.dev](https://bridge.privmx.dev).
 
+## Management panel
+
+Management panel for your PrivMX Bridge is available at [http://localhost:9111/panel](http://localhost:9111/panel).
+
 ## Generate Key Pair
 
 To generate a new ECC key pair, run:
