@@ -128,4 +128,4 @@ if [ -n "$SOLUTION_ID" ]; then
 fi
 printf "\n"
 printf "All the data above is saved in the ./volumes/.env file.\n"
-printf "To learn what you can do with PrivMX Bridge, visit https://docs.privmx.dev/bridge/getting-started#after-installing\n"
+printf "To learn what you can do with PrivMX Bridge, visit https://docs.privmx.dev/bridge#after-installing\n"
