@@ -10,19 +10,23 @@ services:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
       start_period: 10s
       start_interval: 1s
+    profiles:
+      - with-db
 
   privmx-bridge:
     image: 'simplito/privmx-bridge'
     environment:
-      PRIVMX_MONGO_URL: "mongodb://mongodb/"
-      PRIVMX_CORS_ENABLED: "true"
+      - PRIVMX_MONGO_URL=${DB_URL:-mongodb://mongodb/}
+      - PRIVMX_CORS_ENABLED="true"
     volumes:
       - './volumes/bridge/storage:/work/privmx-bridge/storage'
       - './volumes/bridge/plugins:/work/privmx-bridge/plugins'
     ports:
       - "9111:3000"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
+        required: false
     healthcheck:
       test: pmxbridge_up
       start_period: 20s

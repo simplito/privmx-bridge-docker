@@ -7,6 +7,7 @@ VOLUMES_DIR=$DIR/volumes
 ENV_FILE=$VOLUMES_DIR/.env
 CREATE_SOLUTION=true
 CREATE_CONTEXT=true
+DB_URL=$DB_URL
 
 mkdir -p $VOLUMES_DIR
 
@@ -24,19 +25,22 @@ else
     fi
 fi
 
-for ARG in "$@"; do
-    if [ "$ARG" == "--no-solution" ]; then
-        CREATE_SOLUTION=false
-    fi
-    if [ "$ARG" == "--no-context" ]; then
-        CREATE_CONTEXT=false
-    fi
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --no-solution) CREATE_SOLUTION=false ;;  # Assign next argument to NAME
+        --no-context) CREATE_CONTEXT=false ;;    # Assign next argument to AGE
+        --db-url) DB_URL="$2"; shift ;;    # Assign next argument to AGE
+        *) echo "Unknown parameter: $1"; exit 1 ;;
+    esac
+    shift
 done
+
 
 insert_variable() {
     KEY=$1
     VALUE=$2
-    
+
     printf "$KEY=$VALUE\n" >> $ENV_FILE
 }
 
@@ -49,9 +53,17 @@ printf "\n"
 
 printf "\e[1;36m-----------------\nBooting up\n-----------------\e[0m\n"
 cd $DIR
+echo "Database connection to $DB_URL"
 mkdir -p $VOLUMES_DIR
 docker compose pull privmx-bridge
-docker compose up -d --wait
+
+if [[ -z "$DB_URL" ]]; then
+   docker compose --profile with-db up -d --wait
+else
+   DB_URL=$DB_URL docker compose up -d --wait
+fi
+
+
 printf "OK\n"
 printf "\n"
 
@@ -121,11 +133,11 @@ if [ -n "$SOLUTION_ID" ]; then
     printf "\n"
     printf "    IDs generated for your application:\n"
     printf "          Solution ID:  $SOLUTION_ID\n"
-    
+
     if [ -n "$CONTEXT_ID" ]; then
         printf "           Context ID:  $CONTEXT_ID\n"
     fi
 fi
 printf "\n"
 printf "All the data above is saved in the ./volumes/.env file.\n"
-printf "To learn what you can do with PrivMX Bridge, visit https://docs.privmx.dev/bridge/getting-started#after-installing\n"
+printf "To learn what you can do with PrivMX Bridge, visit https://docs.privmx.dev/bridge#after-installing\n"
