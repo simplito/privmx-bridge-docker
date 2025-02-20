@@ -3,10 +3,12 @@
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DOCKER_COMPOSE_OVERRIDE=$DIR/docker-compose.override.yaml
 VOLUMES_DIR=$DIR/volumes
 ENV_FILE=$VOLUMES_DIR/.env
 CREATE_SOLUTION=true
 CREATE_CONTEXT=true
+DB_URL=""
 
 mkdir -p $VOLUMES_DIR
 
@@ -24,13 +26,14 @@ else
     fi
 fi
 
-for ARG in "$@"; do
-    if [ "$ARG" == "--no-solution" ]; then
-        CREATE_SOLUTION=false
-    fi
-    if [ "$ARG" == "--no-context" ]; then
-        CREATE_CONTEXT=false
-    fi
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --no-solution) CREATE_SOLUTION=false ;;
+        --no-context) CREATE_CONTEXT=false ;;
+        --db-url) DB_URL="$2"; shift ;;
+        *) echo "Unknown parameter: $1"; exit 1 ;;
+    esac
+    shift
 done
 
 insert_variable() {
@@ -46,6 +49,10 @@ printf "*                         \e[1;36mPRIVMX BRIDGE INSTALLER\e[0m          
 printf "*                                                                         *\n"
 printf "***************************************************************************\n"
 printf "\n"
+
+if [ -n "$DB_URL" ]; then
+    printf "services:\n  mongodb: !reset\n  privmx-bridge:\n    environment:\n      PRIVMX_MONGO_URL: $DB_URL\n    depends_on: !reset\n" > $DOCKER_COMPOSE_OVERRIDE
+fi
 
 printf "\e[1;36m-----------------\nBooting up\n-----------------\e[0m\n"
 cd $DIR

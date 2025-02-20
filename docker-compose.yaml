@@ -13,6 +13,9 @@ services:
 
   privmx-bridge:
     image: 'simplito/privmx-bridge'
+    env_file:
+      - path: ./bridge.env
+        required: false
     environment:
       PRIVMX_MONGO_URL: "mongodb://mongodb/"
       PRIVMX_CORS_ENABLED: "true"

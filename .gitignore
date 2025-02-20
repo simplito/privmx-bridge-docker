@@ -1,4 +1,5 @@
 /volumes
 /api_key
-/.env
+/bridge.env
 /.scripts
+/docker-compose.override.yaml

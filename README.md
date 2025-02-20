@@ -32,6 +32,8 @@ It will boot up the containers, add the API key, one Solution, and one Context.
 
 **NOTE:** If you want to configure HTTPS [go to this section](#https).
 
+**NOTE:** If you want to use external MongoDB [go to this section](#external%20mongodb).
+
 ## Start
 
 ```
@@ -67,10 +69,16 @@ If you don't want to create a Solution or Context, use the `--no-solution` or `-
 ./setup.sh --no-context
 ```
 
+### External MongoDB
+You can use the `--db-url` argument to disable the included MongoDB container and instruct PrivMX Bridge to connect to a given database.
+```
+./setup.sh --db-url "YOUR_MONGODB_CONNECTION_STRING"
+```
+This command creates a `docker-compose.override.yaml` file. If you change your mind and want to use the included MongoDB, delete this file.
+
 ## Configuration
 
-You can edit the `docker-compose.yaml` file and add an [environment variable](https://github.com/simplito/privmx-bridge#configuration-options) in the `services.bridge.environment` property.
-Alternatively, you can add the property `env_file: ".env"` to `services.bridge` and then create an `.env` file.
+You can create a `bridge.env` file and put [environment variables](https://github.com/simplito/privmx-bridge#configuration-options) there.
 Don't forget to bring down and bring up your setup to apply the changes:
 
 ```
