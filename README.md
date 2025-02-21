@@ -32,7 +32,7 @@ It will boot up the containers, add the API key, one Solution, and one Context.
 
 **NOTE:** If you want to configure HTTPS [go to this section](#https).
 
-**NOTE:** If you want to use external MongoDB [go to this section](#external%20mongodb).
+**NOTE:** If you want to use external MongoDB [go to this section](#external-mongodb).
 
 ## Start
 
