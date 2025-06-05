@@ -101,6 +101,8 @@ else
     printf "Context already created \033[0;32mOK\033[0m\n"
 fi
 
+PUBLIC_KEY=$(docker compose exec -T privmx-bridge pmxbridge_getpublickey --kvprint | grep 'PUBLIC_KEY=' | cut -d= -f2)
+
 sleep 1
 
 printf "\n"
@@ -123,6 +125,8 @@ printf "    PrivMX Bridge URL:  http://localhost:9111\n"
 printf "\n"
 printf "           API Key ID:  $API_KEY_ID\n"
 printf "       API Key Secret:  $API_KEY_SECRET\n"
+printf " PrivMX Bridge PubKey:  $PUBLIC_KEY\n"
+
 
 if [ -n "$SOLUTION_ID" ]; then
     printf "\n"
