@@ -3,3 +3,5 @@
 /bridge.env
 /.scripts
 /docker-compose.override.yaml
+/.env
+/.env.local
