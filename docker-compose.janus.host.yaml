@@ -1,0 +1,20 @@
+services:
+  mediaserver:
+    image: simplito/janus-gateway-docker:v1.4.0
+    container_name: janus
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./volumes/janus-conf:/usr/local/etc/janus
+      - ./volumes/certs:/usr/local/share/janus/certs
+      - ./volumes/recordings:/recordings
+    depends_on:
+      - coturn
+
+  coturn:
+    image: coturn/coturn:latest
+    container_name: coturn-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro

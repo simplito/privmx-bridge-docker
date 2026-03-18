@@ -1,0 +1,39 @@
+services:
+  mediaserver:
+    image: simplito/janus-gateway-docker:v1.4.0
+    container_name: janus
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+      - "8089:8089"
+      - "8188:8188"
+      - "8989:8989"
+      - "10000-10299:10000-10299/udp"
+    volumes:
+      - ./volumes/janus-conf:/usr/local/etc/janus
+      - ./volumes/certs:/usr/local/share/janus/certs
+      - ./volumes/recordings:/recordings
+    depends_on:
+      - coturn
+    networks:
+      - default
+
+  coturn:
+    image: coturn/coturn:latest
+    container_name: coturn-server
+    restart: unless-stopped
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+      - "20000-20200:20000-20200/udp"
+    volumes:
+      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+    networks:
+      - default
+
+networks:
+  default:
+    name: privmx-infra-network
+    external: true
