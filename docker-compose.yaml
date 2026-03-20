@@ -10,9 +10,11 @@ services:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
       start_period: 10s
       start_interval: 1s
+    networks:
+      - default
 
   privmx-bridge:
-    image: 'simplito/privmx-bridge'
+    image: 'simplito/privmx-bridge:latest'
     env_file:
       - path: ./bridge.env
         required: false
@@ -30,3 +32,10 @@ services:
       test: pmxbridge_up
       start_period: 20s
       start_interval: 1s
+    networks:
+      - default
+
+networks:
+  default:
+    name: privmx-infra-network
+    external: true

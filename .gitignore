@@ -3,3 +3,10 @@
 /bridge.env
 /.scripts
 /docker-compose.override.yaml
+certs
+recordings
+.env
+janus-conf
+.streams.env
+bridge.env
+streams.env
