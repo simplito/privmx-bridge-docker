@@ -4,17 +4,14 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 VOLUMES_DIR=$DIR/volumes
-ENV_FILE=$VOLUMES_DIR/.env
+ENV_FILE=$DIR/bridge.env
 
-if [ ! -f $ENV_FILE ]; then
-    printf "File with api key does not exist ($ENV_FILE)\n"
-    exit 1
+if [ -f $ENV_FILE ]; then
+    source $ENV_FILE
 fi
 
-source $ENV_FILE
-
 if [ -z $API_KEY_ID ] || [ -z $API_KEY_SECRET ]; then
-    printf "There is no api key in env file ($ENV_FILE)\n"
+    printf "API_KEY_ID and API_KEY_SECRET must be set (via env file or environment)\n"
     exit 1
 fi
 
