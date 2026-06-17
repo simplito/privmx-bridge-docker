@@ -5,9 +5,9 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ./volumes/janus-conf:/usr/local/etc/janus
-      - ./volumes/certs:/usr/local/share/janus/certs
-      - ./volumes/recordings:/recordings
+      - ./volumes/janus-conf:/usr/local/etc/janus:z
+      - ./volumes/certs:/usr/local/share/janus/certs:z
+      - ./volumes/recordings:/recordings:z
     depends_on:
       - coturn
 
@@ -17,4 +17,4 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro,z
