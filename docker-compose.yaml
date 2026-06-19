@@ -3,9 +3,13 @@ services:
   mongodb:
     image: mongo:7.0
     command: ["--replSet", "rs0", "--bind_ip_all"]
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
-      - './volumes/mongo/db:/data/db'
-      - './volumes/mongo/configdb:/data/configdb'
+      - './volumes/mongo/db:/data/db:z'
+      - './volumes/mongo/configdb:/data/configdb:z'
     healthcheck:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
       start_period: 10s
@@ -22,8 +26,8 @@ services:
       PRIVMX_MONGO_URL: "mongodb://mongodb/"
       PRIVMX_CORS_ENABLED: "true"
     volumes:
-      - './volumes/bridge/storage:/work/privmx-bridge/storage'
-      - './volumes/bridge/plugins:/work/privmx-bridge/plugins'
+      - './volumes/bridge/storage:/work/privmx-bridge/storage:z'
+      - './volumes/bridge/plugins:/work/privmx-bridge/plugins:z'
     ports:
       - "9111:3000"
     depends_on:

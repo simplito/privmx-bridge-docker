@@ -285,7 +285,7 @@ if [ "$WITH_JANUS" = true ] && { [ "$USE_LOCAL_JANUS" = true ] || [ "$USE_LOCAL_
     chmod 777 "$RECORDINGS_DIR" 2>/dev/null
 
     if [ -z "$(ls -A "$JANUS_CONF_DIR" 2>/dev/null)" ]; then
-        docker run --rm -v "$JANUS_CONF_DIR":/tmp/conf simplito/janus-gateway-docker:v1.4.0 sh -c "cp /usr/local/etc/janus/*.jcfg /tmp/conf/"
+        docker run --rm -v "$JANUS_CONF_DIR":/tmp/conf:z simplito/janus-gateway-docker:v1.4.0 sh -c "cp /usr/local/etc/janus/*.jcfg /tmp/conf/"
     fi
 
     update_env_var "PUBLIC_IP" "$CURRENT_IP" "$INFRA_ENV_FILE"

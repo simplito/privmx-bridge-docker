@@ -10,9 +10,9 @@ services:
       - "8989:8989"
       - "10000-10299:10000-10299/udp"
     volumes:
-      - ./volumes/janus-conf:/usr/local/etc/janus
-      - ./volumes/certs:/usr/local/share/janus/certs
-      - ./volumes/recordings:/recordings
+      - ./volumes/janus-conf:/usr/local/etc/janus:z
+      - ./volumes/certs:/usr/local/share/janus/certs:z
+      - ./volumes/recordings:/recordings:z
     depends_on:
       - coturn
     networks:
@@ -29,7 +29,7 @@ services:
       - "5349:5349/udp"
       - "20000-20200:20000-20200/udp"
     volumes:
-      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - ./volumes/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro,z
     networks:
       - default
 
