@@ -18,6 +18,21 @@ services:
       - default
 
   privmx-bridge:
+    pre_start:
+      - user: "0:0"
+        command:
+          - sh
+          - -ec
+          - |
+            mkdir -p /work/privmx-bridge/storage/tmp
+            mkdir -p /work/privmx-bridge/storage/files
+            mkdir -p /work/privmx-bridge/plugins
+            chown 1001:1001 \
+              /work/privmx-bridge/storage \
+              /work/privmx-bridge/storage/tmp \
+              /work/privmx-bridge/storage/files \
+              /work/privmx-bridge/plugins
+
     image: 'simplito/privmx-bridge:latest'
     env_file:
       - path: ./bridge.env
@@ -33,7 +48,12 @@ services:
     depends_on:
       - mongodb
     healthcheck:
-      test: pmxbridge_up
+      test:
+        - CMD-SHELL
+        - >-
+          pmxbridge_up &&
+          test -w /work/privmx-bridge/storage/tmp &&
+          test -w /work/privmx-bridge/storage/files
       start_period: 20s
       start_interval: 1s
     networks:
